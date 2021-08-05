@@ -1,0 +1,231 @@
+.card {
+    position: relative;
+    margin: 0 auto;
+    margin-bottom: -270px;
+    bottom: 310px;
+    width: 430px;
+    height: 270px;
+    font-family: 'Source Code Pro', monospace;
+    color: #fff;
+}
+
+.card__side {
+    border-radius: 15px;
+    overflow: hidden;
+    text-shadow: 7px 6px 10px rgb(14 42 90 / 80%);
+    box-shadow: 0 20px 60px 0 rgb(14 42 90 / 55%);
+    transition: all 0.8s cubic-bezier(0.71, 0.03, 0.56, 0.85);
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+}
+
+.card__front {
+    height: 100%;
+    transform: perspective(2000px) rotateY(0deg);
+    background:linear-gradient( rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4) ), center / cover url("./assets/card-background.jpg");
+}
+
+.card__frontContent {
+    padding: 25px 25px;
+    position: relative;
+    z-index: 4;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: space-between;
+    height: 100%;
+}
+
+.card__focus {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    border: 2px solid rgba(255, 255, 255, 0.65);
+    border-radius: 5px;
+    transition: all 0.35s cubic-bezier(0.71, 0.03, 0.56, 0.85);
+    opacity: 0;
+    overflow: hidden;
+}
+
+.card__focus::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #08142f;
+    height: 100%;
+    border-radius: 5px;
+    filter: blur(25px);
+    opacity: 0.5;
+}
+
+.card__back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: perspective(2000px) rotateY(-180deg);
+    background:linear-gradient( rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4) ), center / cover url("./assets/card-background-flip.jpg");
+}
+
+.card.cardRotate .card__front {
+    transform: perspective(1000px) rotateY(180deg);
+}
+
+.card.cardRotate .card__back {
+    transform: perspective(1000px) rotateY(0deg);
+}
+
+.card__magnitBand {
+    margin-top: 30px;
+    height: 50px;
+    background-color: black;
+}
+
+.card__cvvTitle {
+    margin: 30px 10px 0;
+    padding-right: 10px;
+    font-size: 15px;
+    text-transform: uppercase;
+    text-align: right;
+}
+
+.card__cvvBand {
+    margin: 0 10px;
+    height: 50px;
+    background-color: #fff;
+    border-radius: 4px;
+    font-size: 18px;
+    color: #1a3b5d;
+}
+
+.card__visaLabelBack {
+    margin: 30px 0 0 326px;
+    height: 45px;
+    opacity: 0.9;
+}
+
+.card__protectLabel {
+    width: 60px;
+    height: 48px;
+}
+
+.card__visaLabel {
+    height: 45px;
+    opacity: 0.9;
+}
+
+.card__cardNumber {
+    padding: 10px 15px;
+    width: 100%;
+    line-height: 1;
+    font-size: 27px;
+}
+
+.card__num {
+    position: relative;
+    display: inline-block;
+}
+
+.card__num[data-containdata] {
+    animation: cdappearance .2s ease 1 forwards;
+}
+
+.card__num[data-containdata]:after {
+    content: "#";
+    display: block;
+    position: absolute;
+    top: -100%;
+    animation: cddisappearance .2s ease 1 forwards;
+}
+
+@keyframes cdappearance {
+    0% { 
+        top: 26px;
+        opacity: 0;
+        }
+    100% { 
+        top: 0px;
+        opacity: 1;
+        }
+}
+
+
+
+@keyframes cddisappearance {
+    0% { opacity: 1}
+    100% { opacity: 0}
+}
+
+.card__num[slide-char]:after {
+    content: "#";
+    display: block;
+    position: absolute;
+    top: 100%;
+    animation: ndappearance .2s ease 1 forwards;
+}
+
+@keyframes ndappearance {
+    0% { opacity: 0}
+    100% { opacity: 1}
+}
+
+.card__num[slide-char] {
+    animation: nddisappearance .2s ease 1 forwards;
+}
+
+@keyframes nddisappearance {
+    0% { 
+        top: 0px;
+        opacity: 1;
+        }
+    100% { 
+        top: -26px;
+        opacity: 0;
+        }
+}
+
+
+.card__num:nth-child(4n) {
+    margin-right: 25px;
+}
+
+.card__num:last-child {
+    margin-right: 0;
+}
+
+.card__cardHolder {
+    width: 250px;
+    padding: 10px 15px;
+}
+
+.card__expires {
+    position: relative;
+    padding: 10px 15px;
+}
+
+.card__requisiteTitle {
+    opacity: 0.7;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+.card__requisiteContent {
+    font-size: 18px;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.card__month {
+    display: inline-block;
+}
+
+.card__year {
+    display: inline-block;
+}
+

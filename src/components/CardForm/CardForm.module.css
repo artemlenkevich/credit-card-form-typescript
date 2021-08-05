@@ -1,0 +1,69 @@
+.cardForm {
+    margin: 0 auto;
+    padding: 35px;
+    padding-top: 180px;
+
+    max-width: 570px;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 30px 60px 0 rgb(90 116 148 / 40%);
+    border-radius: 10px;
+}
+
+.fieldWrapper {
+    margin-bottom: 20px;
+}
+
+.input {
+    width: 100%;
+    height: 50px;
+    border-radius: 5px;
+    box-shadow: none;
+    border: 1px solid #ced6e0;
+    transition: all 0.3s ease-in-out;
+    font-size: 18px;
+    padding: 5px 15px;
+    background: none;
+    color: #1a3b5d;
+    font-family: "Source Sans Pro", sans-serif;
+}
+
+.formRow {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.expirationDate {
+    margin-right: 35px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-basis: 500px;
+}
+
+.selectWrapper {
+    flex: 1;
+    margin-right: 15px;
+}
+
+.selectWrapper:last-child {
+    margin-right: 0px;
+}
+
+.submit {
+    width: 100%;
+    height: 55px;
+    background: #2364d2;
+    border: none;
+    border-radius: 5px;
+    font-size: 22px;
+    font-weight: 500;
+    font-family: "Source Sans Pro", sans-serif;
+    box-shadow: 3px 10px 20px 0px rgb(35 100 210 / 30%);
+    color: #fff;
+    cursor: pointer;
+    transition: background .4s ease;
+}
+
+.submit:hover {
+    background: #0f48aa;
+}
