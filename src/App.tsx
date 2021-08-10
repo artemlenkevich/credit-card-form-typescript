@@ -2,7 +2,7 @@ import styles from './App.module.css';
 import { CardForm, InitialValues } from './components/CardForm/CardForm';
 
 export const onFormSubmit = (values: InitialValues) => {
-  console.log(`
+  alert(`
   Сard Number: ${values.cardNumber}
   Card Holders: ${values.cardHolders}
   Expires: ${values.month}/${values.year}
