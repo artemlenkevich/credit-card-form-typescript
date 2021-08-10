@@ -1,11 +1,11 @@
 import {render, screen, waitFor} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom'; 
-import { CardForm } from './components/CardForm/CardForm';
+import { CardForm, InitialValues } from './CardForm';
 
 it('rendering and submitting form', async () => {
     const handleSubmit = jest.fn();
-    const onFormSubmit = (values) => {
+    const onFormSubmit = (values: InitialValues) => {
         handleSubmit(values);
     }
 
@@ -18,6 +18,7 @@ it('rendering and submitting form', async () => {
     userEvent.type(screen.getByLabelText('CVV'), '123');
 
     userEvent.click(screen.getByRole('button', {name: 'Submit'}));
+    
     await waitFor(() => {
         expect(handleSubmit).toHaveBeenCalledWith({
             cardNumber: '1234567891234567',
