@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/credit-card-form-typescript/static/css/main.202f3249.chunk.css",
+    "main.js": "/credit-card-form-typescript/static/js/main.f61ae00f.chunk.js",
+    "main.js.map": "/credit-card-form-typescript/static/js/main.f61ae00f.chunk.js.map",
+    "runtime-main.js": "/credit-card-form-typescript/static/js/runtime-main.5c0fedd9.js",
+    "runtime-main.js.map": "/credit-card-form-typescript/static/js/runtime-main.5c0fedd9.js.map",
+    "static/js/2.318aac97.chunk.js": "/credit-card-form-typescript/static/js/2.318aac97.chunk.js",
+    "static/js/2.318aac97.chunk.js.map": "/credit-card-form-typescript/static/js/2.318aac97.chunk.js.map",
+    "index.html": "/credit-card-form-typescript/index.html",
+    "static/css/main.202f3249.chunk.css.map": "/credit-card-form-typescript/static/css/main.202f3249.chunk.css.map",
+    "static/js/2.318aac97.chunk.js.LICENSE.txt": "/credit-card-form-typescript/static/js/2.318aac97.chunk.js.LICENSE.txt",
+    "static/media/Card.module.css": "/credit-card-form-typescript/static/media/card-background.2a09f48a.jpg",
+    "static/media/chip.f88a902d.png": "/credit-card-form-typescript/static/media/chip.f88a902d.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.5c0fedd9.js",
+    "static/js/2.318aac97.chunk.js",
+    "static/css/main.202f3249.chunk.css",
+    "static/js/main.f61ae00f.chunk.js"
+  ]
+}
