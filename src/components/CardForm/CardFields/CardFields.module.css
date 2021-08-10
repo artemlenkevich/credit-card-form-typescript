@@ -27,3 +27,7 @@
     border-color: #3d9cff;
     outline: none;
 }
+
+.input_error {
+    border-color: #b90000;
+}

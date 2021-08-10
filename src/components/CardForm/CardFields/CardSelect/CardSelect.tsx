@@ -3,14 +3,17 @@ import styles from '../CardFields.module.css';
 
 interface ICardSelect {
     name: string,
-    options: Array<number>
+    options: Array<string>
 }
 
 export const CardSelect: React.FC<ICardSelect> = ({options, ...props}) => {
-    const [field] = useField(props);
+    const [field, meta] = useField(props);
+
+    let inputStyles = styles.input;
+    if (meta.error) inputStyles += ` ${styles.input_error}`;
 
     return (
-        <select className={styles.input} {...field} {...props} id={field.name}>
+        <select className={inputStyles} {...field} {...props} id={field.name}>
             {options.map(option => <option key={option} value={option}>{option}</option>)}
         </select>
     )

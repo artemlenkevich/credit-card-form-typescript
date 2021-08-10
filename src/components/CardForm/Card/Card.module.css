@@ -63,6 +63,33 @@
     opacity: 0.5;
 }
 
+.card__focus[data-focuson="cardNumber"] {
+    width: 360px;
+    height: 45px;
+    top: 105px;
+    left: 27px;
+    opacity: 1;
+}
+
+.card__focus[data-focuson="cardHolders"] {
+    width: 299px;
+    height: 60px;
+    top: 186px;
+    left: 22px;
+    opacity: 1;
+}
+
+.card__focus[data-focuson="month"],
+.card__focus[data-focuson="year"] {
+    width: 86px;
+    height: 60px;
+    top: 186px;
+    left: 320px;
+    opacity: 1;
+}
+
+
+
 .card__back {
     position: absolute;
     top: 0;
@@ -97,11 +124,14 @@
 
 .card__cvvBand {
     margin: 0 10px;
+    padding: 10px 10px 0;
     height: 50px;
     background-color: #fff;
     border-radius: 4px;
     font-size: 18px;
     color: #1a3b5d;
+    text-align: right;
+    text-shadow: none;
 }
 
 .card__visaLabelBack {
@@ -125,6 +155,7 @@
     width: 100%;
     line-height: 1;
     font-size: 27px;
+    cursor: pointer;
 }
 
 .card__num {
@@ -132,16 +163,31 @@
     display: inline-block;
 }
 
-.card__num[data-containdata] {
+.card__num:nth-child(4n) {
+    margin-right: 25px;
+}
+
+.card__num:last-child {
+    margin-right: 0;
+}
+
+[data-containdata] {
     animation: cdappearance .2s ease 1 forwards;
 }
 
-.card__num[data-containdata]:after {
-    content: "#";
-    display: block;
-    position: absolute;
-    top: -100%;
+[data-nodata] {
     animation: cddisappearance .2s ease 1 forwards;
+}
+
+@keyframes cddisappearance {
+    0% { 
+        top: 26px;
+        opacity: 0;
+        }
+    100% { 
+        top: 0px;
+        opacity: 1;
+        }
 }
 
 @keyframes cdappearance {
@@ -155,53 +201,16 @@
         }
 }
 
-
-
-@keyframes cddisappearance {
-    0% { opacity: 1}
-    100% { opacity: 0}
-}
-
-.card__num[slide-char]:after {
-    content: "#";
-    display: block;
-    position: absolute;
-    top: 100%;
-    animation: ndappearance .2s ease 1 forwards;
-}
-
-@keyframes ndappearance {
-    0% { opacity: 0}
-    100% { opacity: 1}
-}
-
-.card__num[slide-char] {
-    animation: nddisappearance .2s ease 1 forwards;
-}
-
-@keyframes nddisappearance {
-    0% { 
-        top: 0px;
-        opacity: 1;
-        }
-    100% { 
-        top: -26px;
-        opacity: 0;
-        }
-}
-
-
-.card__num:nth-child(4n) {
-    margin-right: 25px;
-}
-
-.card__num:last-child {
-    margin-right: 0;
-}
-
 .card__cardHolder {
     width: 250px;
     padding: 10px 15px;
+    cursor: pointer;
+}
+
+.cardHolder__char {
+    position: relative;
+    display: inline-block;
+    min-width: 8px;
 }
 
 .card__expires {
@@ -219,6 +228,7 @@
     font-size: 18px;
     line-height: 1;
     text-transform: uppercase;
+    cursor: pointer;
 }
 
 .card__month {
