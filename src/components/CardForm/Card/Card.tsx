@@ -1,6 +1,10 @@
 import styles from './Card.module.css';
 import chipImg from './assets/chip.png';
 import visaImg from './assets/visa.png';
+import mastercardImg from './assets/mastercard.png';
+import amexImg from './assets/amex.png';
+import discoverImg from './assets/discover.png';
+import troyImg from './assets/troy.png';
 import { useFormikContext } from 'formik';
 import { InitialValues } from '../CardForm';
 import React, { ReactElement } from 'react';
@@ -14,7 +18,7 @@ export const Card: React.FC<ICard> = ({ isCardFlipped, focusedElementName }) => 
     
     const { values: { cardNumber, cardHolders, month, year, cvv } } = useFormikContext<InitialValues>();
     
-    const сreateNumberOnCard = (cardNumber: string): Array<ReactElement> => {
+    const generateNumberOnCard = (cardNumber: string): Array<ReactElement> => {
         let numberOnCard = [];
 
         for (let i = 0; i < 16; i++) {
@@ -27,13 +31,22 @@ export const Card: React.FC<ICard> = ({ isCardFlipped, focusedElementName }) => 
         return numberOnCard;
     }
 
-    const createCardHoldersOnCard = (cardHolders: string) => {
+    const generateCardHoldersOnCard = (cardHolders: string) => {
         if (!cardHolders.length) return <span>full name</span>;
         return cardHolders.split('').map((char, i) => <span key={i} className={styles.cardHolder__char} data-containdata>{char}</span>);
     }
 
-    const numberOnCard = сreateNumberOnCard(cardNumber);
-    const cardHoldersOnCard = createCardHoldersOnCard(cardHolders);
+    const generateCardTypeImg = (cardNumber: string) => {
+        if (/^(34|37)/.test(cardNumber)) return amexImg;
+        if (/^5[1-5]/.test(cardNumber)) return mastercardImg;
+        if (/^6011/.test(cardNumber)) return discoverImg;
+        if (/^9792/.test(cardNumber)) return troyImg;
+        return visaImg;
+    }
+
+    const cardTypeImg = generateCardTypeImg(cardNumber);
+    const numberOnCard = generateNumberOnCard(cardNumber);
+    const cardHoldersOnCard = generateCardHoldersOnCard(cardHolders);
     const monthOnCard = month === 'Month' ? 'MM' : month ;
     const yearOnCard = year === 'Year' ? 'YY' : year.slice(2) ;
     const cvvOnCard = '*'.repeat(cvv.length);
@@ -47,7 +60,7 @@ export const Card: React.FC<ICard> = ({ isCardFlipped, focusedElementName }) => 
                 <div className={styles.card__focus} data-focuson={focusedElementName}/>
                 <div className={styles.card__frontContent}>
                     <img className={styles.card__protectLabel} src={chipImg} alt=''/>
-                    <img className={styles.card__visaLabel} src={visaImg} alt=''/>
+                    <img className={styles.card__cardType} src={cardTypeImg} alt=''/>
                     <label className={styles.card__cardNumber} htmlFor='cardNumber'>
                         {numberOnCard}
                     </label>
@@ -67,7 +80,7 @@ export const Card: React.FC<ICard> = ({ isCardFlipped, focusedElementName }) => 
                 <div className={styles.card__magnitBand}></div>
                 <div className={styles.card__cvvTitle}>CVV</div>
                 <div className={styles.card__cvvBand}>{cvvOnCard}</div>
-                <img className={styles.card__visaLabelBack} src={visaImg} alt=''/>
+                <img className={styles.card__cardTypeBack} src={cardTypeImg} alt=''/>
             </div>
         </div>
     )

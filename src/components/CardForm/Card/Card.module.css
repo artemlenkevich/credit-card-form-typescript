@@ -134,10 +134,13 @@
     text-shadow: none;
 }
 
-.card__visaLabelBack {
-    margin: 30px 0 0 326px;
-    height: 45px;
-    opacity: 0.9;
+.card__cardTypeBack {
+        margin-left: 320px;
+        margin-top: 25px;
+        height: 45px;
+        opacity: 0.9;
+        max-width: 100px;
+        object-fit: contain;
 }
 
 .card__protectLabel {
@@ -145,7 +148,10 @@
     height: 48px;
 }
 
-.card__visaLabel {
+.card__cardType {
+    object-fit: contain;
+    object-position: top right;
+    max-width: 100px;
     height: 45px;
     opacity: 0.9;
 }
@@ -172,14 +178,14 @@
 }
 
 [data-containdata] {
-    animation: cdappearance .2s ease 1 forwards;
+    animation: appearance .2s ease 1 forwards;
 }
 
 [data-nodata] {
-    animation: cddisappearance .2s ease 1 forwards;
+    animation: disappearance .2s ease 1 forwards;
 }
 
-@keyframes cddisappearance {
+@keyframes disappearance {
     0% { 
         top: 26px;
         opacity: 0;
@@ -190,7 +196,7 @@
         }
 }
 
-@keyframes cdappearance {
+@keyframes appearance {
     0% { 
         top: 26px;
         opacity: 0;
