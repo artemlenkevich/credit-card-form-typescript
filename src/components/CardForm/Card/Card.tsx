@@ -7,33 +7,29 @@ import discoverImg from './assets/discover.png';
 import troyImg from './assets/troy.png';
 import { useFormikContext } from 'formik';
 import { InitialValues } from '../CardForm';
-import React, { ReactElement } from 'react';
+import React from 'react';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 interface ICard {
-    isCardFlipped: boolean,
+    isCardFlipped: boolean
     focusedElementName: string | null
 }
 
 export const Card: React.FC<ICard> = ({ isCardFlipped, focusedElementName }) => {
-    
+
     const { values: { cardNumber, cardHolders, month, year, cvv } } = useFormikContext<InitialValues>();
-    
-    const generateNumberOnCard = (cardNumber: string): Array<ReactElement> => {
-        let numberOnCard = [];
 
-        for (let i = 0; i < 16; i++) {
-            let num = cardNumber[i] ? 
-            <span key={i} className={styles.card__num} data-containdata >{cardNumber[i]}</span> : 
-            <span key={i} className={styles.card__num} data-nodata>#</span> ;
-
-            numberOnCard.push(num);
-        }
-        return numberOnCard;
+    const generateNumberOnCard = (cardNumber: string): string => {
+        if (cardNumber.length < 16) cardNumber = cardNumber + '#'.repeat(16 - cardNumber.length);
+        return cardNumber;
     }
 
     const generateCardHoldersOnCard = (cardHolders: string) => {
-        if (!cardHolders.length) return <span>full name</span>;
-        return cardHolders.split('').map((char, i) => <span key={i} className={styles.cardHolder__char} data-containdata>{char}</span>);
+        if (!cardHolders.length) {
+            return 'full name' + ' '.repeat(11);
+        } else {
+            return cardHolders + ' '.repeat(20 - cardHolders.length);
+        }
     }
 
     const generateCardTypeImg = (cardNumber: string) => {
@@ -47,41 +43,165 @@ export const Card: React.FC<ICard> = ({ isCardFlipped, focusedElementName }) => 
     const cardTypeImg = generateCardTypeImg(cardNumber);
     const numberOnCard = generateNumberOnCard(cardNumber);
     const cardHoldersOnCard = generateCardHoldersOnCard(cardHolders);
-    const monthOnCard = month === 'Month' ? 'MM' : month ;
-    const yearOnCard = year === 'Year' ? 'YY' : year.slice(2) ;
+    const monthOnCard = month === 'Month' ? 'MM' : month;
+    const yearOnCard = year === 'Year' ? 'YY' : year.slice(2);
     const cvvOnCard = '*'.repeat(cvv.length);
 
     let cardStyles = styles.card;
     if (isCardFlipped) cardStyles += ` ${styles.cardRotate}`;
-    
+
     return (
         <div className={cardStyles}>
             <div className={styles.card__side + ' ' + styles.card__front}>
-                <div className={styles.card__focus} data-focuson={focusedElementName}/>
+                <div className={styles.card__focus} data-focuson={focusedElementName} />
                 <div className={styles.card__frontContent}>
-                    <img className={styles.card__protectLabel} src={chipImg} alt=''/>
-                    <img className={styles.card__cardType} src={cardTypeImg} alt=''/>
-                    <label className={styles.card__cardNumber} htmlFor='cardNumber'>
-                        {numberOnCard}
-                    </label>
-                    <label className={styles.card__cardHolder} htmlFor='cardHolders'>
-                        <div className={styles.card__requisiteTitle}>Card Holder</div>
-                        <div className={styles.card__requisiteContent}>{cardHoldersOnCard}</div>
-                    </label>
-                    <div className={styles.card__expires}>
-                        <div className={styles.card__requisiteTitle}>Expires</div>
-                        <div className={styles.card__requisiteContent}>
-                            <label className={styles.card__month} htmlFor='month'>{monthOnCard}</label>/<label className={styles.card__year} htmlFor='year'>{yearOnCard}</label>
-                        </div>
-                    </div>
+                    <img className={styles.card__protectLabel} src={chipImg} alt='' />
+                    <img className={styles.card__cardType} src={cardTypeImg} alt='' />
+                    <CardNumber number={numberOnCard} />
+                    <CardHolders name={cardHoldersOnCard} />
+                    <CardExpires month={monthOnCard} year={yearOnCard} />
                 </div>
             </div>
             <div className={styles.card__side + ' ' + styles.card__back}>
                 <div className={styles.card__magnitBand}></div>
                 <div className={styles.card__cvvTitle}>CVV</div>
                 <div className={styles.card__cvvBand}>{cvvOnCard}</div>
-                <img className={styles.card__cardTypeBack} src={cardTypeImg} alt=''/>
+                <img className={styles.card__cardTypeBack} src={cardTypeImg} alt='' />
             </div>
         </div>
     )
 };
+
+interface ICardExpires {
+    month: string
+    year: string
+}
+
+const CardExpires: React.FC<ICardExpires> = ({ month, year }) => {
+    return (
+        <div className={styles.card__expires}>
+            <div className={styles.card__requisiteTitle}>Expires</div>
+            <div className={styles.card__requisiteContent}>
+                <label className={styles.card__month_container} htmlFor='month'>
+                    <TransitionGroup component={null}>
+                        <CSSTransition
+                            key={month}
+                            timeout={300}
+                            classNames={{
+                                enter: styles.slideFadeUpEnter,
+                                enterActive: styles.slideFadeUpEnterActive,
+                                exit: styles.slideFadeUpExit,
+                                exitActive: styles.slideFadeUpExitActive
+                            }}>
+                            <span className={styles.card__month}>{month}</span>
+                        </CSSTransition>
+                    </TransitionGroup>
+                </label>
+                /
+                <label className={styles.card__year_container} htmlFor='month'>
+                    <TransitionGroup component={null}>
+                        <CSSTransition
+                            key={year}
+                            timeout={300}
+                            classNames={{
+                                enter: styles.slideFadeUpEnter,
+                                enterActive: styles.slideFadeUpEnterActive,
+                                exit: styles.slideFadeUpExit,
+                                exitActive: styles.slideFadeUpExitActive
+                            }}>
+                            <span className={styles.card__year}>{year}</span>
+                        </CSSTransition>
+                    </TransitionGroup>
+                </label>
+            </div>
+        </div>
+    )
+}
+
+interface ICardNumber {
+    number: string
+}
+
+const CardNumber: React.FC<ICardNumber> = ({ number }) => {
+    return (
+        <label className={styles.card__cardNumber} htmlFor='cardNumber'>
+            {number.split('').map((n, i) => {
+                return <div key={i} className={styles.card__num_wrapper}>
+                    <TransitionGroup component={null}>
+                        <CSSTransition
+                            key={i + n}
+                            timeout={300}
+                            classNames={{
+                                enter: styles.slideFadeUpEnter,
+                                enterActive: styles.slideFadeUpEnterActive,
+                                exit: styles.slideFadeUpExit,
+                                exitActive: styles.slideFadeUpExitActive
+                            }}>
+                            <span className={styles.card__num}>{n}</span>
+                        </CSSTransition>
+                    </TransitionGroup>
+                </div>
+            })}
+        </label>
+    )
+}
+
+interface ICardHolders {
+    name: string
+}
+
+const CardHolders: React.FC<ICardHolders> = ({ name }) => {
+    let nameArr = [];
+    console.log(name);
+
+
+    if (name.startsWith('full name')) {
+        nameArr.push(name)
+    } else {
+        nameArr = name.split('');
+    }
+
+    return (
+        <label className={styles.card__cardHolder} htmlFor='cardHolders'>
+            <div className={styles.card__requisiteTitle}>Card Holder</div>
+            <div className={styles.card__requisiteContent}>
+                {nameArr.map((n, i) => {
+                    return <div key={i} className={styles.cardHolder__char_container}>
+                        <TransitionGroup component={null}>
+                            <CSSTransition
+                                key={i + n}
+                                timeout={300}
+                                classNames={{
+                                    enter: styles.slideFadeUpEnter,
+                                    enterActive: styles.slideFadeUpEnterActive,
+                                    exit: styles.slideFadeUpExit,
+                                    exitActive: styles.slideFadeUpExitActive
+                                }}>
+                                <span className={styles.cardHolder__char}>{n}</span>
+                            </CSSTransition>
+                        </TransitionGroup>
+                    </div>
+                })}
+            </div>
+        </label>
+    )
+}
+
+// const WithFadeUpAnimation = (arr: Array<HTMLElement>) => { /* Receive array inline-components and return array inline-components with animation */
+
+//         return arr.map((element, i) => <TransitionGroup component={null}>
+//                                                 <CSSTransition
+//                                                     key={i + element.innerText}
+//                                                     timeout={300}
+//                                                     classNames={{
+//                                                         enter: styles.slideFadeUpEnter1,
+//                                                         enterActive: styles.slideFadeUpEnterActive1,
+//                                                         exit: styles.slideFadeUpExit1,
+//                                                         exitActive: styles.slideFadeUpExitActive1
+//                                                     }}>
+//                                                     {element}
+//                                                 </CSSTransition>
+//                                             </TransitionGroup>
+//                                         )
+    
+// }

@@ -164,17 +164,21 @@
     cursor: pointer;
 }
 
-.card__num {
-    position: relative;
+.card__num_wrapper {
     display: inline-block;
+    position: relative;
 }
 
-.card__num:nth-child(4n) {
+.card__num_wrapper:nth-child(4n) {
     margin-right: 25px;
 }
 
-.card__num:last-child {
+.card__num_wrapper:last-child {
     margin-right: 0;
+}
+
+.card__num {
+    display: inline-block;
 }
 
 [data-containdata] {
@@ -213,11 +217,6 @@
     cursor: pointer;
 }
 
-.cardHolder__char {
-    position: relative;
-    display: inline-block;
-    min-width: 8px;
-}
 
 .card__expires {
     position: relative;
@@ -237,11 +236,87 @@
     cursor: pointer;
 }
 
+.cardHolder__char_container {
+    display: inline-block;
+    position: relative;
+}
+
+.cardHolder__char {
+    display: inline-block;
+    min-width: 8px;
+}
+
+.card__month_container {
+    display: inline-block;
+    position: relative;
+}
+
 .card__month {
     display: inline-block;
+}
+
+.card__year_container {
+    display: inline-block;
+    position: relative;
 }
 
 .card__year {
     display: inline-block;
 }
 
+/* Animation */
+
+.slideFadeUpEnter {
+    opacity: 0;
+    transform: translateY(15px);
+}
+
+.slideFadeUpEnterActive {
+    opacity: 1;
+    transform: translateY(0px);
+    transition: all 0.25s ease-in-out;
+    transition-delay: 0.1s;
+}
+
+.slideFadeUpExit {
+    opacity: 1;
+}
+
+.slideFadeUpExitActive {
+    opacity: 0;
+    transition: all 0.25s ease-in-out;
+    transform: translateY(-15px);
+    position: absolute;
+    left: 0;
+    width: max-content;
+}
+
+/* Animation1 */
+
+.slideFadeUpEnter1 {
+    opacity: 0;
+    transform: translateY(15px);
+}
+
+.slideFadeUpEnterActive1 {
+    opacity: 1;
+    transform: translateY(0px);
+    transition: all 0.25s ease-in-out;
+    transition-delay: 0.1s;
+    position: absolute;
+}
+
+.slideFadeUpExit1 {
+    opacity: 1;
+}
+
+.slideFadeUpExitActive1 {
+    opacity: 0;
+    transition: all 0.25s ease-in-out;
+    transform: translateY(-15px);
+    width: max-content;
+}
+
+/* .card__num:nth-child(4n) {
+    margin-right: 10px;
+} */
