@@ -56,7 +56,7 @@ export const Card: React.FC<ICard> = ({ isCardFlipped, focusedElementName }) => 
                 <div className={styles.card__focus} data-focuson={focusedElementName} />
                 <div className={styles.card__frontContent}>
                     <img className={styles.card__protectLabel} src={chipImg} alt='' />
-                    <img className={styles.card__cardType} src={cardTypeImg} alt='' />
+                    <CardType src={cardTypeImg} />
                     <CardNumber number={numberOnCard} />
                     <CardHolders name={cardHoldersOnCard} />
                     <CardExpires month={monthOnCard} year={yearOnCard} />
@@ -71,6 +71,28 @@ export const Card: React.FC<ICard> = ({ isCardFlipped, focusedElementName }) => 
         </div>
     )
 };
+
+interface ICardType {
+    src: string
+}
+
+const CardType: React.FC<ICardType> = ({ src }) => {
+    return <div className={styles.card__cardType_container}>
+                <TransitionGroup exit={true} component={null}>
+                    <CSSTransition
+                        key={src}
+                        timeout={300}
+                        classNames={{
+                            enter: styles.slideFadeUpEnter,
+                            enterActive: styles.slideFadeUpEnterActive,
+                            exit: styles.slideFadeUpExit,
+                            exitActive: styles.slideFadeUpExitActive
+                        }}>
+                        <img className={styles.card__cardType} src={src} alt='' />
+                    </CSSTransition>
+                </TransitionGroup>
+            </div>
+}
 
 interface ICardExpires {
     month: string
@@ -151,21 +173,19 @@ interface ICardHolders {
 }
 
 const CardHolders: React.FC<ICardHolders> = ({ name }) => {
-    let nameArr = [];
-    console.log(name);
-
+    let chars = [];
 
     if (name.startsWith('full name')) {
-        nameArr.push(name)
+        chars.push(name)
     } else {
-        nameArr = name.split('');
+        chars = name.split('');
     }
 
     return (
         <label className={styles.card__cardHolder} htmlFor='cardHolders'>
             <div className={styles.card__requisiteTitle}>Card Holder</div>
             <div className={styles.card__requisiteContent}>
-                {nameArr.map((n, i) => {
+                {chars.map((n, i) => {
                     return <div key={i} className={styles.cardHolder__char_container}>
                         <TransitionGroup component={null}>
                             <CSSTransition
@@ -186,22 +206,3 @@ const CardHolders: React.FC<ICardHolders> = ({ name }) => {
         </label>
     )
 }
-
-// const WithFadeUpAnimation = (arr: Array<HTMLElement>) => { /* Receive array inline-components and return array inline-components with animation */
-
-//         return arr.map((element, i) => <TransitionGroup component={null}>
-//                                                 <CSSTransition
-//                                                     key={i + element.innerText}
-//                                                     timeout={300}
-//                                                     classNames={{
-//                                                         enter: styles.slideFadeUpEnter1,
-//                                                         enterActive: styles.slideFadeUpEnterActive1,
-//                                                         exit: styles.slideFadeUpExit1,
-//                                                         exitActive: styles.slideFadeUpExitActive1
-//                                                     }}>
-//                                                     {element}
-//                                                 </CSSTransition>
-//                                             </TransitionGroup>
-//                                         )
-    
-// }
