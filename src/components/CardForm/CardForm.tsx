@@ -25,7 +25,7 @@ const yearOptions = ['Year', '2021', '2022', '2023', '2024', '2025', '2026'];
 
 export const CardForm: React.FC<ICardForm> = ({ onFormSubmit }) => {
     
-    let [isCardFlipped, flipCard] = useState(false);
+    let [cardIsFlipped, flipCard] = useState(false);
     let [focusedElementName, setFocusOn] = useState<string | null>(null);
 
     const validate = ({cardNumber, cardHolders, cvv, month, year}: InitialValues) => {
@@ -92,7 +92,7 @@ export const CardForm: React.FC<ICardForm> = ({ onFormSubmit }) => {
                 validateOnChange={false}
             >
                 <Form onFocus={onFormFocus} onBlur={onFormBlur}>
-                    <Card isCardFlipped={isCardFlipped} focusedElementName={focusedElementName}/>
+                    <Card cardIsFlipped={cardIsFlipped} focusedElementName={focusedElementName}/>
                     <div className={styles.fieldWrapper}>
                         <CardField name='cardNumber' type='text' label='Card Number' id='cardNumber' checkPattern={cardNumberPattern} />
                     </div>

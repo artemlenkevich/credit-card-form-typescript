@@ -11,25 +11,43 @@ import React from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 interface ICard {
-    isCardFlipped: boolean
+    cardIsFlipped: boolean
     focusedElementName: string | null
 }
 
-export const Card: React.FC<ICard> = ({ isCardFlipped, focusedElementName }) => {
+interface ICardNumber {
+    number: string
+}
+
+interface ICardType {
+    src: string
+}
+
+interface ICardHolders {
+    name: string
+}
+
+interface ICardExpires {
+    month: string
+    year: string
+}
+
+export const Card: React.FC<ICard> = ({ cardIsFlipped, focusedElementName }) => {
 
     const { values: { cardNumber, cardHolders, month, year, cvv } } = useFormikContext<InitialValues>();
 
     const generateNumberOnCard = (cardNumber: string): string => {
-        if (cardNumber.length < 16) cardNumber = cardNumber + '#'.repeat(16 - cardNumber.length);
-        return cardNumber;
+        cardNumber = cardNumber + '#'.repeat(16 - cardNumber.length);
+        let CardNumberWithAsterisk = cardNumber.split('').map((char, i) => i >= 4 && i <= 11 && char !== '#' ? '*' : char).join('');
+        /* From 4 to 11 char is replaced to asterisk  */
+        return CardNumberWithAsterisk;
     }
 
     const generateCardHoldersOnCard = (cardHolders: string) => {
         if (!cardHolders.length) {
-            return 'full name' + ' '.repeat(11);
-        } else {
-            return cardHolders + ' '.repeat(20 - cardHolders.length);
+            return 'full name';
         }
+        return cardHolders;
     }
 
     const generateCardTypeImg = (cardNumber: string) => {
@@ -48,7 +66,7 @@ export const Card: React.FC<ICard> = ({ isCardFlipped, focusedElementName }) => 
     const cvvOnCard = '*'.repeat(cvv.length);
 
     let cardStyles = styles.card;
-    if (isCardFlipped) cardStyles += ` ${styles.cardRotate}`;
+    if (cardIsFlipped) cardStyles += ` ${styles.cardRotate}`;
 
     return (
         <div className={cardStyles}>
@@ -72,31 +90,12 @@ export const Card: React.FC<ICard> = ({ isCardFlipped, focusedElementName }) => 
     )
 };
 
-interface ICardType {
-    src: string
-}
-
 const CardType: React.FC<ICardType> = ({ src }) => {
     return <div className={styles.card__cardType_container}>
-                <TransitionGroup exit={true} component={null}>
-                    <CSSTransition
-                        key={src}
-                        timeout={300}
-                        classNames={{
-                            enter: styles.slideFadeUpEnter,
-                            enterActive: styles.slideFadeUpEnterActive,
-                            exit: styles.slideFadeUpExit,
-                            exitActive: styles.slideFadeUpExitActive
-                        }}>
-                        <img className={styles.card__cardType} src={src} alt='' />
-                    </CSSTransition>
-                </TransitionGroup>
-            </div>
-}
-
-interface ICardExpires {
-    month: string
-    year: string
+        <WithFadeUpTransition>
+            <img className={styles.card__cardType} src={src} alt='' />
+        </WithFadeUpTransition>
+    </div>
 }
 
 const CardExpires: React.FC<ICardExpires> = ({ month, year }) => {
@@ -105,71 +104,36 @@ const CardExpires: React.FC<ICardExpires> = ({ month, year }) => {
             <div className={styles.card__requisiteTitle}>Expires</div>
             <div className={styles.card__requisiteContent}>
                 <label className={styles.card__month_container} htmlFor='month'>
-                    <TransitionGroup component={null}>
-                        <CSSTransition
-                            key={month}
-                            timeout={300}
-                            classNames={{
-                                enter: styles.slideFadeUpEnter,
-                                enterActive: styles.slideFadeUpEnterActive,
-                                exit: styles.slideFadeUpExit,
-                                exitActive: styles.slideFadeUpExitActive
-                            }}>
-                            <span className={styles.card__month}>{month}</span>
-                        </CSSTransition>
-                    </TransitionGroup>
+                    <WithFadeUpTransition>
+                        <span className={styles.card__month}>{month}</span>
+                    </WithFadeUpTransition>
                 </label>
                 /
                 <label className={styles.card__year_container} htmlFor='month'>
-                    <TransitionGroup component={null}>
-                        <CSSTransition
-                            key={year}
-                            timeout={300}
-                            classNames={{
-                                enter: styles.slideFadeUpEnter,
-                                enterActive: styles.slideFadeUpEnterActive,
-                                exit: styles.slideFadeUpExit,
-                                exitActive: styles.slideFadeUpExitActive
-                            }}>
-                            <span className={styles.card__year}>{year}</span>
-                        </CSSTransition>
-                    </TransitionGroup>
+                    <WithFadeUpTransition>
+                        <span className={styles.card__year}>{year}</span>
+                    </WithFadeUpTransition>
                 </label>
             </div>
         </div>
     )
 }
 
-interface ICardNumber {
-    number: string
-}
-
 const CardNumber: React.FC<ICardNumber> = ({ number }) => {
+    let charsArr = number.split('');
+    for (let i = 4; i < charsArr.length - 1; i += 6) {
+        charsArr.splice(i, 0, ' ', ' ')
+    }
+    
     return (
         <label className={styles.card__cardNumber} htmlFor='cardNumber'>
-            {number.split('').map((n, i) => {
-                return <div key={i} className={styles.card__num_wrapper}>
-                    <TransitionGroup component={null}>
-                        <CSSTransition
-                            key={i + n}
-                            timeout={300}
-                            classNames={{
-                                enter: styles.slideFadeUpEnter,
-                                enterActive: styles.slideFadeUpEnterActive,
-                                exit: styles.slideFadeUpExit,
-                                exitActive: styles.slideFadeUpExitActive
-                            }}>
-                            <span className={styles.card__num}>{n}</span>
-                        </CSSTransition>
-                    </TransitionGroup>
-                </div>
-            })}
+            <WithFadeUpTransition>
+                {charsArr.map((n, i) => {
+                    return <span key={n + i} className={styles.card__num}>{n}</span>
+                })}
+            </WithFadeUpTransition>
         </label>
     )
-}
-
-interface ICardHolders {
-    name: string
 }
 
 const CardHolders: React.FC<ICardHolders> = ({ name }) => {
@@ -180,29 +144,44 @@ const CardHolders: React.FC<ICardHolders> = ({ name }) => {
     } else {
         chars = name.split('');
     }
+    let charsArr = chars.map((n, i) => <span key={i} className={styles.cardHolder__char}>{n}</span>)
 
     return (
         <label className={styles.card__cardHolder} htmlFor='cardHolders'>
             <div className={styles.card__requisiteTitle}>Card Holder</div>
             <div className={styles.card__requisiteContent}>
-                {chars.map((n, i) => {
-                    return <div key={i} className={styles.cardHolder__char_container}>
-                        <TransitionGroup component={null}>
-                            <CSSTransition
-                                key={i + n}
-                                timeout={300}
-                                classNames={{
-                                    enter: styles.slideFadeUpEnter,
-                                    enterActive: styles.slideFadeUpEnterActive,
-                                    exit: styles.slideFadeUpExit,
-                                    exitActive: styles.slideFadeUpExitActive
-                                }}>
-                                <span className={styles.cardHolder__char}>{n}</span>
-                            </CSSTransition>
-                        </TransitionGroup>
-                    </div>
-                })}
+                <WithFadeUpTransition>
+                    {charsArr}
+                </WithFadeUpTransition>
             </div>
         </label>
     )
+}
+
+/* Receive array or one element and return elements with transition.
+   Accept img elements */
+const WithFadeUpTransition: React.FC<{ children: Array<JSX.Element> | JSX.Element }> = ({ children }) => {
+    if (!Array.isArray(children)) children = [children];
+
+    return <TransitionGroup component={null}>
+                {
+                    children.map((element: any, i) => {
+
+                        let key = element.props.children + i;
+                        if (element.type === 'img') key = element.props.src;
+
+                        return <CSSTransition
+                                    key={key}
+                                    timeout={300}
+                                    classNames={{
+                                        enter: styles.slideFadeUpEnter,
+                                        enterActive: styles.slideFadeUpEnterActive,
+                                        exit: styles.slideFadeUpExit,
+                                        exitActive: styles.slideFadeUpExitActive
+                                    }}>
+                                    {element}
+                               </CSSTransition>
+                    })
+                }
+            </TransitionGroup>
 }
